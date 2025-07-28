@@ -40,8 +40,7 @@ with tab1:
 
     course_topic = st.text_area(
         "📌 What would you like the course to focus on?",
-        "Build a beginner course on Newton's Laws of Motion."
-    )
+        "Build a beginner course on Newton's Laws of Motion.")
 
     if st.button("Generate Course Plan 🧠"):
         with st.spinner("Generating AI-powered course outline..."):
@@ -81,7 +80,7 @@ with tab2:
                         "learning_style": learning_style,
                         "language": language,
                         "background": background,
-                        "question": question
+                        "question": user_question
                     }).json()
                 
                 st.success("Here's your personalized explanation:")
