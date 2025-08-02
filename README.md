@@ -17,10 +17,17 @@ Educators can quickly build courses and quizzes that adapt to learner progress.
 Learners get access to AI-driven tutoring and assessment for a more interactive experience.
 # 🛠 Tools
 FastAPI – Backend API framework
+
 Streamlit – Frontend framework
+
 LangChain – LLM orchestration
+
 OpenAI API – Powers tutoring and quiz features
+
 Python – Core programming language
+
 Pydantic – Data validation
+
 Uvicorn – ASGI server
+
 python-dotenv – Environment variable management
