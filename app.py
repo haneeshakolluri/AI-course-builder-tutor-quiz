@@ -1,3 +1,4 @@
+
 import streamlit as st
 import requests
 import uuid
@@ -8,7 +9,7 @@ from streamlit.components.v1 import html
 st.set_page_config(page_title="📚 AI Tutor", layout="wide")
 
 # App title
-st.title("🎓 AI-Powered Course builder,Tutor & Quiz App")
+st.title("🎓 AI-Powered Tutor & Quiz App")
 
 with st.sidebar:
     st.header("Learning Preferences")
@@ -32,42 +33,14 @@ with st.sidebar:
 
 API_ENDPOINT = "http://127.0.0.1:8000"
 
-tab1, tab2,tab3 = st.tabs(["🏗️ Build a Course","📝 Ask a Question", "🧠 Take a Quiz"])
+tab1, tab2 = st.tabs(["📝 Ask a Question", "🧠 Take a Quiz"])
+
 
 with tab1:
-    st.header("📚 AI Course Builder")
-    st.subheader("Design your own custom learning path ✨")
-
-    course_topic = st.text_area(
-        "📌 What would you like the course to focus on?",
-        "Build a beginner course on Newton's Laws of Motion.")
-
-    if st.button("Generate Course Plan 🧠"):
-        with st.spinner("Generating AI-powered course outline..."):
-            try:
-                response = requests.post(
-                    f"{API_ENDPOINT}/build-course",
-                    json={
-                        "subject": subject,
-                        "level": level,
-                        "learning_style": learning_style,
-                        "language": language,
-                        "background": background,
-                        "topic": course_topic
-                    }
-                ).json()
-
-                st.success("🎉 Course plan generated!")
-                st.markdown(response["response"], unsafe_allow_html=True)
-
-            except Exception as e:
-                st.error(f"❌ Error generating course: {str(e)}")
-                st.info(f"📡 Is the backend running at `{API_ENDPOINT}/build-course`?")
-
-with tab2:
     # Main content area for tutoring
     st.header("Ask Your Question")
-    user_question = st.text_area("❓ What would you like to learn today?", "Explain Newton's Second Law of Motion.")
+    question = st.text_area("❓ What would you like to learn today?",
+                         "Explain Newton's Second Law of Motion.")
     
     # Tutor section
     if st.button("Get Explanation 🧠"):
@@ -80,7 +53,7 @@ with tab2:
                         "learning_style": learning_style,
                         "language": language,
                         "background": background,
-                        "question": user_question
+                        "question": question
                     }).json()
                 
                 st.success("Here's your personalized explanation:")
@@ -91,7 +64,7 @@ with tab2:
 
 
 
-with tab3:
+with tab2:
     # Quiz section
     st.header("Test Your Knowledge")
     
