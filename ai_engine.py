@@ -6,14 +6,16 @@ import json
 import re
 import logging
 
-# configure logging
-logging.basicConfig(level=logging.INFO,format='%(asctime)s-%(levelname)s-%(message)s')
-logger=logging.getLogger(__name__)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 
 load_dotenv()
-OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-#connect to model
+
 def get_llm():
     try:
         return ChatOpenAI(
@@ -24,7 +26,7 @@ def get_llm():
     except Exception as e:
         logger.error(f"Error initializing LLM: {str(e)}")
         raise Exception(f"Failed to initialize AI model: {str(e)}")
-
+    
 def generate_tutoring_response(subject, level, question, learning_style, background, language):
     """
     Generate a personalized tutoring response based on user preferences.
@@ -57,7 +59,9 @@ def generate_tutoring_response(subject, level, question, learning_style, backgro
     except Exception as e:
         logger.error(f"Error generating tutoring response: {str(e)}")
         raise Exception(f"Failed to generate tutoring response: {str(e)}")
-    
+
+
+
 def _create_tutoring_prompt(subject, level, question, learning_style, background, language):
     """Helper function to create a well-structured tutoring prompt"""
     
@@ -86,7 +90,10 @@ def _create_tutoring_prompt(subject, level, question, learning_style, background
     
     Your explanation should be educational, accurate, and engaging.
     """
+    
     return prompt
+
+
 
 def _format_tutoring_response(content, learning_style):
     """Helper function to format the tutoring response based on learning style"""
@@ -98,6 +105,8 @@ def _format_tutoring_response(content, learning_style):
     else:
         return content
     
+
+
 def _create_quiz_prompt(subject, level, num_questions):
     """Helper function to create a well-structured quiz generation prompt"""
     
@@ -126,6 +135,7 @@ def _create_quiz_prompt(subject, level, num_questions):
     IMPORTANT: Make sure to return valid JSON that can be parsed. Do not include any text outside the JSON array.
     Include a brief explanation for each correct answer.
     """
+
 def _create_fallback_quiz(subject, num_questions):
     """Helper function to create a fallback quiz if parsing fails"""
     
@@ -156,6 +166,8 @@ def _validate_quiz_data(quiz_data):
             
         if not isinstance(question["options"], list) or len(question["options"]) != 4:
             raise ValueError("Each question must have exactly 4 options")
+        
+
 
 def _parse_quiz_response(response_content, subject, num_questions):
     """Helper function to parse and validate the quiz response"""
@@ -200,6 +212,8 @@ def _parse_quiz_response(response_content, subject, num_questions):
         return _create_fallback_quiz(subject, num_questions)
     
 
+
+
 def generate_quiz(subject, level, num_questions=5, reveal_answer=True):
     """
     Generate a quiz with multiple-choice questions based on subject and level.
@@ -243,56 +257,6 @@ def generate_quiz(subject, level, num_questions=5, reveal_answer=True):
         logger.error(f"Error generating quiz: {str(e)}")
         raise Exception(f"Failed to generate quiz: {str(e)}")
     
-def generate_course_outline(subject, level, topic, learning_style, background, language):
-    """
-    Generates a course overview using the LLM based on user preferences.
-
-    Args:
-        subject (str): Subject of the course
-        level (str): Learning difficulty level
-        topic (str): Core topic of the course
-        learning_style (str): Visual, Hands-on, Text-based
-        background (str): Student's prior knowledge
-        language (str): Preferred output language
-
-    Returns:
-        str: Markdown-formatted course plan
-    """
-    try:
-        llm = get_llm()
-
-        prompt = f"""
-You are an expert instructional designer. Create a detailed course plan on the topic “{topic}” in the subject: {subject}.
-
-STUDENT PROFILE:
-- Learning Level: {level}
-- Background: {background}
-- Preferred learning style: {learning_style}
-- Output Language: {language}
-
-INSTRUCTIONS:
-1. Divide the course into 5–7 modules.
-2. Give each module a title and a concise summary.
-3. Tailor content to the learning style (visual aids, exercises, or structured explanation).
-4. Format the output in markdown with clear hierarchy (##, ###).
-5. Use {language} for all content.
-
-OUTPUT FORMAT:
-## Course Title: [Title Here]
-### Module 1: [Title]
-- Description: ...
-### Module 2: ...
-...
-"""
-
-        logger.info(f"Generating course for topic: {topic}, subject: {subject}, level: {level}")
-        response = llm([HumanMessage(content=prompt)])
-        return response.content.strip()
-
-    except Exception as e:
-        logger.error(f"Error generating course outline: {str(e)}")
-        raise Exception(f"Failed to generate course: {str(e)}")
-
 
 def _format_quiz_with_reveal(quiz_data):
     """
@@ -485,6 +449,7 @@ def _format_quiz_with_reveal(quiz_data):
     </body>
     </html>
     """
+    
     return html
 
 # Export quiz to file (new function)
